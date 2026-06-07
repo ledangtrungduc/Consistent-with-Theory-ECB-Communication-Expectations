@@ -4,6 +4,9 @@
 This repository contains the replication code for the Master's dissertation titled **"Consistent with Theory? The Impact of ECB Communication and News on European Household Expectations"**, submitted to Goethe Business School and Vietnamese-German University.
 
 This research investigates how European Central Bank (ECB) communication influenced household macroeconomic expectations across six major Euro-area economies (Belgium, France, Germany, Italy, Netherlands, and Spain) during the period 2020–2025. It assesses the consistency of these expectations with the **Phillips Curve** and **Taylor Rule** frameworks.
+## 🎓 Master's Dissertation
+For a detailed discussion of the methodology, theoretical background, and extended empirical findings, you can access the full Master's dissertation here:
+[**Download Full Thesis PDF**](https://drive.google.com/file/d/1DH4rOQ2GFME51vWcZvl9Z8OYIZu00-sB/view?usp=sharing)
 
 ## 📊 Research Highlights
 * **Theory-Consistency**: Evaluates how households align their expectations with standard macroeconomic theories.
