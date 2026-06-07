@@ -29,6 +29,13 @@ For a detailed discussion of the methodology, theoretical background, and extend
   ```stata
   ssc install estout, replace
   ssc install rangestat, replace
+  
+## 📊 Data Sources
+The empirical analysis integrates three primary data sources spanning from September 2020 to December 2024:
+1. **ECB Consumer Expectations Survey (CES):** Provides quantitative and qualitative expectations regarding macroeconomic variables (inflation, interest rates, and unemployment).
+2. **Harmonized Index of Consumer Prices (HICP):** Supplies macroeconomic baseline indicators, including realized inflation rates and unemployment.
+3. **ECB Data Portal:** Provides historical data on the cost of borrowing for households, employed as a proxy for prevailing interest rates.
+
 ## 🔐 Data Availability Statement
 The raw microdata used in this study (ECB Consumer Expectations Survey - CES) is subject to strict data access agreements and confidentiality protocols. Consequently, the raw datasets (.csv, .dta) are not included in this repository. Researchers interested in replicating these results can apply for official access through the ECB's Data Portal.
 ## 📝 Citation
