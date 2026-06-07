@@ -37,7 +37,11 @@ The empirical analysis integrates three primary data sources spanning from Septe
 3. **ECB Data Portal:** Provides historical data on the cost of borrowing for households, employed as a proxy for prevailing interest rates.
 
 ## 🔐 Data Availability Statement
-The raw microdata used in this study (ECB Consumer Expectations Survey - CES) is subject to strict data access agreements and confidentiality protocols. Consequently, the raw datasets (.csv, .dta) are not included in this repository. Researchers interested in replicating these results can apply for official access through the ECB's Data Portal.
+
+The raw microdata used in this study from the **ECB Consumer Expectations Survey (CES)** is freely available to the public for research purposes. To comply with the ECB's terms of use and data distribution guidelines, the raw datasets (`.csv`, `.dta`) are not hosted directly within this repository.
+
+Researchers interested in replicating these results can easily register and download the microdata for free directly from the official ECB portal:
+🔗 **[Access the ECB Consumer Expectations Survey (CES) Data Here](https://www.ecb.europa.eu/stats/ecb_surveys/consumer_exp_survey/html/index.en.html)**
 ## 📝 Citation
 If you use this code or findings in your research, please cite:
 Le Dang Trung Duc (2025). Consistent with Theory? The Impact of ECB Communication and News on European Household Expectations. Master's Dissertation, Goethe Business School/Vietnamese-German University.
