@@ -26,3 +26,8 @@ This research investigates how European Central Bank (ECB) communication influen
   ```stata
   ssc install estout, replace
   ssc install rangestat, replace
+## 🔐 Data Availability Statement
+The raw microdata used in this study (ECB Consumer Expectations Survey - CES) is subject to strict data access agreements and confidentiality protocols. Consequently, the raw datasets (.csv, .dta) are not included in this repository. Researchers interested in replicating these results can apply for official access through the ECB's Data Portal.
+## 📝 Citation
+If you use this code or findings in your research, please cite:
+Le Dang Trung Duc (2025). Consistent with Theory? The Impact of ECB Communication and News on European Household Expectations. Master's Dissertation, Goethe Business School/Vietnamese-German University.
