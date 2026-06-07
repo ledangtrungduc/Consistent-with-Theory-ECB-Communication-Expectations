@@ -31,7 +31,7 @@ ssc install estout, replace
 ssc install rangestat, replace
 
 ## 🔐 Data Availability Statement
-The raw microdata used in this study (ECB Consumer Expectations Survey - CES) is subject to strict data access agreements and confidentiality protocols. Consequently, the raw datasets (`.csv`, `.dta`) are **not included** in this repository. Researchers interested in replicating these results can apply for official access through the [ECB's Data Portal](https://www.ecb.europa.eu/stats/ecb_surveys/ces/html/index.en.html).
+The raw microdata used in this study (ECB Consumer Expectations Survey - CES) is subject to strict data access agreements and confidentiality protocols. Consequently, the raw datasets (`.csv`, `.dta`) are **not included** in this repository. Researchers interested in replicating these results can apply for official access through the [ECB's Data Portal](https://www.ecb.europa.eu/stats/ecb_surveys/consumer_exp_survey/html/index.en.html#data).
 
 ## 📝 Citation
 If you use this code or findings in your research, please cite:
