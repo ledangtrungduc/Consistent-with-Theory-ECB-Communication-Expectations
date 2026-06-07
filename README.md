@@ -21,7 +21,13 @@ Heterogeneity: Explores how responses vary by country, education level, and ECB 
 02_main_analysis.do: Executes all Probit regressions, event studies, and generates visualization plots.
 
 results/: (Folder) Stores the output files including regression tables (.rtf) and event-study plots (.png).
+Note: ##
+...
+* `Code/`: Contains the refactored, modularized scripts (`00_master.do`, `01_data_cleaning.do`, `02_main_analysis.do`) optimized for reproducibility.
 
+* `Original_Code/`: Contains the original, monolithic thesis code (as submitted) for archival purposes and transparency. 
+  * *Note: Paths in the original scripts are specific to the author's machine at the time of the thesis completion.*
+...
 🛠 Prerequisites
 Stata: Tested on Stata 16 or newer.
 

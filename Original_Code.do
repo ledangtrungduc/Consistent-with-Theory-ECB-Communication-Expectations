@@ -2160,82 +2160,72 @@ esttab P1_AME T1_AME P2_AME using "margins_AME.rtf", replace ///
     addnotes("Average marginal effects (AME). Standard errors in ( ). p-values in ( ).", ///
              "Significance: * p<0.10, ** p<0.05, *** p<0.01.")
 			 
-                                                                 
-***************************************************************************************************************************
-                                                                         *** ROBERTNESS CHECK FOR SENDER CHANNEL 
-*** Change the thresold from 20% to 50% 
-*EXPECTED INFLATION:
-clear all
-set more off
-*Categorize interest rate expectations (C5111/C5113)
+********************************************************************************
+*** ROBUSTNESS CHECK FOR SENDER CHANNEL: Change threshold from 20% to 50%
+********************************************************************************
 use "ces_with_rates_inflation.dta", clear
 
-gen inflation_exp_cat_robertness= .
-replace inflation_exp_cat_robertness = 1 if percent_change > 50 & percent_change != .         // Up
-replace inflation_exp_cat_robertness = -1 if percent_change < -50 & percent_change != .       // Down
-replace inflation_exp_cat_robertness = 0 if percent_change >= -50 & percent_change <= 50 & percent_change != .   // Same
-replace inflation_exp_cat_robertness = 0 if c1110 == 5 & c1110 != .    // Same (qualitative override)
-label define infl_exp_robertness -1 "Down" 0 "Same" 1 "Up"
-label values inflation_exp_cat_robertness infl_exp_robertness
-****************************************************************************************************************
-*EXPECTED INTEREST RATE (Using mortgage rate as proxy)
-*Categorize interest rate expectations (C5111/C5113)
-* Create expected_rate by combining C5111 and C5113 based on wave
-gen interest_exp_cat_robertness = .
-replace interest_exp_cat_robertness = 1 if interest_change_pct > 50 & interest_change_pct != .         // Up
-replace interest_exp_cat_robertness = -1 if interest_change_pct < -50 & interest_change_pct != .       // Down
-replace interest_exp_cat_robertness = 0 if interest_change_pct >= -50 & interest_change_pct <= 50 & interest_change_pct != .   // Same
-* Step: Label values for interpretation
-label define inte_exp_cat_label_robertness -1 "Down" 0 "Same" 1 "Up"
-label values interest_exp_cat_robertness inte_exp_cat_label_robertness
-******************************************************************************************************************
-* EXPECTED UNEMPLOYMENT:
-*Merge with the data of unemployment:
-gen unemp_exp_cat_robertness = .
-replace unemp_exp_cat_robertness = 1 if unemp_change_pct > 50 & unemp_change_pct != .        // Expecting more
-replace unemp_exp_cat_robertness = -1 if unemp_change_pct < -50 & unemp_change_pct != .      // Expecting less
-replace unemp_exp_cat_robertness = 0 if inrange(unemp_change_pct, -50, 50) & unemp_change_pct != .  // Expecting same
-*************************************************************************************************************
-*Assess Phillips Curve consistency (using the full sample)
-gen phillips_consistent_robertness = 0
-replace phillips_consistent_robertness = 1 if inflation_exp_cat_robertness == 1 & unemp_exp_cat_robertness == -1
-replace phillips_consistent_robertness = 1 if inflation_exp_cat_robertness == -1  & unemp_exp_cat_robertness == 1
-replace phillips_consistent_robertness = 1 if inflation_exp_cat_robertness == 0 & unemp_exp_cat_robertness == 0
-*Acess Taylor rule 
-*keep if year(dofm(month_date)) >= 2022 & month(dofm(month_date)) >= 7  // Restrict to post-July 2022
-gen taylor_consistent_strict_robert = 0  // Strict alignment with Dräger et al.
-gen taylor_consistent_ecb_robert = 0     // ECB-adapted, focusing on inflation
-* Primary conditions (strict, per Dräger et al.): Align interest rates with expected inflation AND unemployment
-replace taylor_consistent_strict_robert = 1 if interest_exp_cat_robertness == 1 & inflation_exp_cat_robertness == 1 & unemp_exp_cat_robertness == -1  // Rising rates, expected inflation up, unemployment down
-replace taylor_consistent_strict_robert = 1 if interest_exp_cat_robertness == -1 & inflation_exp_cat_robertness == -1 & unemp_exp_cat_robertness == 1  // Falling rates, expected inflation down, unemployment up
-replace taylor_consistent_strict_robert = 1 if interest_exp_cat_robertness == 0 & inflation_exp_cat_robertness == 0 & unemp_exp_cat_robertness == 0  // Constant rates, expected inflation same, unemployment same
-* ECB-adapted conditions: Focus on expected inflation, unemployment secondary
-replace taylor_consistent_ecb_robert = 1 if interest_exp_cat_robertness == 1 & inflation_exp_cat_robertness == 1  // Rising rates, expected inflation up
-replace taylor_consistent_ecb_robert = 1 if interest_exp_cat_robertness == -1 & inflation_exp_cat_robertness == -1  // Falling rates, expected inflation down
-replace taylor_consistent_ecb_robert = 1 if interest_exp_cat_robertness == 0 & inflation_exp_cat_robertness == 0  // Constant rates, expected inflation same
-* Step 9: Summarize Taylor Rule consistency (post-ZLB sample)
-** Run probit regression with new variable construction:
-eststo pc_int_interact: probit phillips_consistent_robertness ///
-    i.income i.age_group i.gender brent_yoy_growth unemp_gap cpi inflation_volatility ///
-    ib2.country_num##i.education_new##(i.ecb_2020_12_10 i.ecb_2021_03_11 i.ecb_2022_06_09 i.ecb_2022_09_08 i.ecb_2023_03_16 i.ecb_2024_06_06), vce(robust)
-**** RERUN REGRESSION FOR ROBUSTNESS CHECK - SENDER CHANNEL FOR PHILLIP CURVES-TAYLOR RULE
+* 1. Expected Inflation (Robustness: 50% threshold)
+gen inflation_exp_cat_robustness = .
+replace inflation_exp_cat_robustness = 1 if percent_change > 50 & percent_change != .
+replace inflation_exp_cat_robustness = -1 if percent_change < -50 & percent_change != .
+replace inflation_exp_cat_robustness = 0 if inrange(percent_change, -50, 50) | c1110 == 5
+label define infl_exp_robustness -1 "Down" 0 "Same" 1 "Up"
+label values inflation_exp_cat_robustness infl_exp_robustness
+
+* 2. Expected Interest Rate (Robustness: 50% threshold)
+gen interest_exp_cat_robustness = .
+replace interest_exp_cat_robustness = 1 if interest_change_pct > 50 & interest_change_pct != .
+replace interest_exp_cat_robustness = -1 if interest_change_pct < -50 & interest_change_pct != .
+replace interest_exp_cat_robustness = 0 if inrange(interest_change_pct, -50, 50)
+label define inte_exp_cat_label_robustness -1 "Down" 0 "Same" 1 "Up"
+label values interest_exp_cat_robustness inte_exp_cat_label_robustness
+
+* 3. Expected Unemployment (Robustness: 50% threshold)
+gen unemp_exp_cat_robustness = .
+replace unemp_exp_cat_robustness = 1 if unemp_change_pct > 50 & unemp_change_pct != .
+replace unemp_exp_cat_robustness = -1 if unemp_change_pct < -50 & unemp_change_pct != .
+replace unemp_exp_cat_robustness = 0 if inrange(unemp_change_pct, -50, 50)
+
+* 4. Construct Consistency Measures
+gen phillips_consistent_robustness = 0
+replace phillips_consistent_robustness = 1 if (inflation_exp_cat_robustness == 1 & unemp_exp_cat_robustness == -1) | ///
+                                              (inflation_exp_cat_robustness == -1 & unemp_exp_cat_robustness == 1) | ///
+                                              (inflation_exp_cat_robustness == 0 & unemp_exp_cat_robustness == 0)
+
+gen taylor_consistent_strict_robust = 0
+replace taylor_consistent_strict_robust = 1 if (interest_exp_cat_robustness == 1 & inflation_exp_cat_robustness == 1 & unemp_exp_cat_robustness == -1) | ///
+                                               (interest_exp_cat_robustness == -1 & inflation_exp_cat_robustness == -1 & unemp_exp_cat_robustness == 1) | ///
+                                               (interest_exp_cat_robustness == 0 & inflation_exp_cat_robustness == 0 & unemp_exp_cat_robustness == 0)
+
+gen taylor_consistent_ecb_robust = 0
+replace taylor_consistent_ecb_robust = 1 if (interest_exp_cat_robustness == 1 & inflation_exp_cat_robustness == 1) | ///
+                                            (interest_exp_cat_robustness == -1 & inflation_exp_cat_robustness == -1) | ///
+                                            (interest_exp_cat_robustness == 0 & inflation_exp_cat_robustness == 0)
+
+* 5. Run Regressions (Robustness Check)
+local ecb_events i.ecb_2020_12_10 i.ecb_2021_03_11 i.ecb_2022_06_09 i.ecb_2022_09_08 i.ecb_2023_03_16 i.ecb_2024_06_06
+local macro_ctrls brent_yoy_growth unemp_gap cpi inflation_volatility
+
+* Phillips Curve Robustness
+probit phillips_consistent_robustness i.income i.age_group i.gender `macro_ctrls' ///
+    ib2.country_num##i.education_new##(`ecb_events'), vce(robust)
 margins, dydx(*)
-eststo pc_int_ame, title(Phillips Consistent AME_Robernesscheck)
+eststo pc_robust_ame, title(Phillips Consistent AME - Robustness)
 
-eststo tr_strict_int_interact: probit taylor_consistent_strict_robert ///
-    i.income i.age_group i.gender brent_yoy_growth unemp_gap cpi inflation_volatility ///
-    ib2.country_num##i.education_new##(i.ecb_2020_12_10 i.ecb_2021_03_11 i.ecb_2022_06_09 i.ecb_2022_09_08 i.ecb_2023_03_16 i.ecb_2024_06_06), vce(robust)
+* Taylor Strict Robustness
+probit taylor_consistent_strict_robust i.income i.age_group i.gender `macro_ctrls' ///
+    ib2.country_num##i.education_new##(`ecb_events'), vce(robust)
 margins, dydx(*)
-eststo tr_strict_ame, title(Taylor Strict AME_Robernesscheck)
+eststo tr_strict_robust_ame, title(Taylor Strict AME - Robustness)
 
-eststo tr_ecb_int_interact: probit taylor_consistent_ecb_robert ///
-    i.income i.age_group i.gender brent_yoy_growth unemp_gap cpi inflation_volatility ///
-    ib2.country_num##i.education_new##(i.ecb_2020_12_10 i.ecb_2021_03_11 i.ecb_2022_06_09 i.ecb_2022_09_08 i.ecb_2023_03_16 i.ecb_2024_06_06), vce(robust)
+* Taylor ECB Robustness
+probit taylor_consistent_ecb_robust i.income i.age_group i.gender `macro_ctrls' ///
+    ib2.country_num##i.education_new##(`ecb_events'), vce(robust)
 margins, dydx(*)
-eststo tr_ecb_ame, title(Taylor ECB AME_Robernesscheck)
+eststo tr_ecb_robust_ame, title(Taylor ECB AME - Robustness)
 
-esttab pc_int_ame tr_strict_ame tr_ecb_ame ///
-    using ame_table.rtf, replace se label star(* 0.05 ** 0.01 *** 0.001) ///
-    title("Average Marginal Effects for All Variables - Robertness check - sender channel") ///
-    compress
-
+* Export Table
+esttab pc_robust_ame tr_strict_robust_ame tr_ecb_robust_ame ///
+    using "$outdir\ame_robustness_table.rtf", replace se label star(* 0.05 ** 0.01 *** 0.001) ///
+    title("Average Marginal Effects - Sender Channel Robustness Check") compress
