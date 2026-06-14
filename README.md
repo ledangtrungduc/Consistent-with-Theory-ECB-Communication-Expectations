@@ -1,5 +1,6 @@
 # Consistent-with-Theory? The Impact of ECB Communication and News on European Household Expectations
-
+**Author:** Le Dang Trung Duc  
+**Supervisor:** Professor Michael Haliassos, PhD
 ## 📌 Overview
 This repository contains the replication code for the Master's dissertation titled **"Consistent with Theory? The Impact of ECB Communication and News on European Household Expectations"**, submitted to Goethe Business School and Vietnamese-German University.
 
